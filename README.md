@@ -24,3 +24,7 @@ Build `test.build.js` with `browserify test.js > test.build.js`.
 ### zigzag
 
 ![zigzag.png](./example-pics/zigzag.png)
+
+### hexpride
+
+![hexpride.png](./example-pics/hexpride.png)

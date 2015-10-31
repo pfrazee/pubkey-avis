@@ -37,21 +37,21 @@ module.exports.blockwork = function (canvas, buf) {
 
   function renderPass (blockSize, alpha) {
     var i = 0
-    function getUint () {
+    function getByte () {
       if (i >= bytes.length) 
         i = 0
       return  bytes[i++]
     }
 
-    var baseR = getUint()
-    var baseG = getUint()
-    var baseB = getUint()
+    var baseR = getByte()
+    var baseG = getByte()
+    var baseB = getByte()
 
     for (var y = 0; y < height; y += blockSize) {
       for (var x = 0; x < height; x += blockSize) {
-        var r = ((baseR + baseR + getUint()) / 3)|0
-        var g = ((baseG + baseG + getUint()) / 3)|0
-        var b = ((baseB + baseB + getUint()) / 3)|0
+        var r = ((baseR + baseR + getByte()) / 3)|0
+        var g = ((baseG + baseG + getByte()) / 3)|0
+        var b = ((baseB + baseB + getByte()) / 3)|0
         context.fillStyle = 'rgba('+r+','+g+','+b+','+alpha+')'
         context.fillRect(x, y, blockSize, blockSize)
       }
@@ -179,6 +179,41 @@ module.exports.zigzag = function (canvas, buf) {
       lastY = y
   }
 }
+
+function fill2 (v) {
+  if (v.length === 1)
+    return '0'+v
+  return v
+}
+module.exports.hexpride = function (canvas, buf) {
+  buf = toArrayBuffer(buf)
+  
+  var context = canvas.getContext && canvas.getContext('2d'),
+    width = canvas.width,
+    height = canvas.height,
+    bytes = new Uint8ClampedArray(buf),
+    blocksPerRow = Math.ceil(Math.sqrt(bytes.length)),
+    blockWidth = width / blocksPerRow,
+    blockHeight = height / blocksPerRow
+
+  var i = 0
+  function getByte () {
+    return bytes[i++]
+  }
+
+  context.fillStyle = '#000'
+  context.fillRect(0, 0, width, height)
+  context.font = ((blockWidth|0) - 6)+'px monospace'
+  context.textBaseline = 'top'
+  for (var y = 0; i < bytes.length; y++) {
+    for (var x = 0; x < blocksPerRow && i < bytes.length; x++) {
+      var byte = getByte()
+      var hue = (byte / 255 * 360)|0
+      context.fillStyle = 'hsl('+hue+', 50%, 30%)'
+      context.fillText(fill2(byte.toString(16)), x*blockWidth, y*blockHeight)
+    }
+  }
+}
 },{}],2:[function(require,module,exports){
 var pubkeyAvis = require('./index')
 
@@ -198,4 +233,5 @@ pubkeyAvis.blockwork(blockworkCanvas, pubkeyBuf)
 pubkeyAvis.blockwild(blockwildCanvas, pubkeyBuf)
 pubkeyAvis.wildegraph(wildegraphCanvas, pubkeyBuf)
 pubkeyAvis.zigzag(zigzagCanvas, pubkeyBuf)
+pubkeyAvis.hexpride(hexprideCanvas, pubkeyBuf)
 },{"./index":1}]},{},[2]);
