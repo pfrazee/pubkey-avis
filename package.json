@@ -1,0 +1,25 @@
+{
+  "name": "pubkey-avis",
+  "version": "1.0.0",
+  "description": "Algorithms for producing avatar images which uniquely (and memorably) map to pubkeys",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pfraze/pubkey-avis.git"
+  },
+  "keywords": [
+    "generative",
+    "art",
+    "html5",
+    "canvas"
+  ],
+  "author": "Paul Frazee <pfrazee@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pfraze/pubkey-avis/issues"
+  },
+  "homepage": "https://github.com/pfraze/pubkey-avis#readme"
+}
