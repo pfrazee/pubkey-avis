@@ -11,18 +11,16 @@ Build `test.build.js` with `browserify test.js > test.build.js`.
 
 ### blockwork
 
-input buffer: `5wOwICjSC0ekV2w6V2zDI+fcqCIxApRg3RIF9TNzWlk=`
-
 ![blockwork.png](./example-pics/blockwork.png)
 
 ### blockwild
-
-input buffer: `5wOwICjSC0ekV2w6V2zDI+fcqCIxApRg3RIF9TNzWlk=`
 
 ![blockwild.png](./example-pics/blockwild.png)
 
 ### wildegraph
 
-input buffer: `5wOwICjSC0ekV2w6V2zDI+fcqCIxApRg3RIF9TNzWlk=`
-
 ![wildegraph.png](./example-pics/wildegraph.png)
+
+### zigzag
+
+![zigzag.png](./example-pics/zigzag.png)

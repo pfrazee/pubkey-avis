@@ -15,3 +15,4 @@ pubkeyOutput.textContent = pubkeyBase64
 pubkeyAvis.blockwork(blockworkCanvas, pubkeyBuf)
 pubkeyAvis.blockwild(blockwildCanvas, pubkeyBuf)
 pubkeyAvis.wildegraph(wildegraphCanvas, pubkeyBuf)
+pubkeyAvis.zigzag(zigzagCanvas, pubkeyBuf)

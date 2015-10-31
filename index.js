@@ -117,8 +117,6 @@ module.exports.wildegraph = function (canvas, buf, blockSize) {
       context.lineTo(x+sizeHalf, y+sizeHalf)
       context.stroke()
     }
-    context.fillStyle = 'rgb('+r+','+g+','+b+')'
-    context.fillRect(x, y, size, size)
     lastX = x
     lastY = y
     lastWeight = weight
@@ -136,5 +134,47 @@ module.exports.wildegraph = function (canvas, buf, blockSize) {
     var y = (bot4(byte)/16*(height - size))|0
     context.fillStyle = 'rgb('+r+','+g+','+b+')'
     context.fillRect(x, y, size, size)
+  }
+}
+
+module.exports.zigzag = function (canvas, buf) {
+  buf = toArrayBuffer(buf)
+  
+  var context = canvas.getContext && canvas.getContext('2d'),
+    width = canvas.width,
+    height = canvas.height,
+    bytes = new Uint8ClampedArray(buf)
+
+  var baseR = bytes[0]
+  var baseG = bytes[1]
+  var baseB = bytes[2]
+  var lastX, lastY
+
+  for (var i=3; i < bytes.length; i++) {
+    var byte = bytes[i]
+    var r = ((baseR + byte) / 2)|0
+    var g = ((baseG + byte) / 2)|0
+    var b = ((baseB + byte) / 2)|0
+    var x = (top4(byte)/16*(width))|0
+    var y = (bot4(byte)/16*(height))|0
+    var weight = byte/64
+
+    if (i % 2 === 0)
+      y = lastY
+    else
+      x = lastX
+
+    context.strokeStyle = 'rgb('+r+','+g+','+b+')'
+    context.lineCap = 'round'
+    context.lineWidth = weight
+    context.beginPath()
+    context.moveTo((lastX||x), (lastY||y))
+    context.lineTo(x, y)
+    context.stroke()
+
+    if (i % 2 === 0)
+      lastX = x
+    else
+      lastY = y
   }
 }
