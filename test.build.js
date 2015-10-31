@@ -214,6 +214,41 @@ module.exports.hexpride = function (canvas, buf) {
     }
   }
 }
+
+module.exports.sosquare = function (canvas, buf) {
+  buf = toArrayBuffer(buf)
+  
+  var context = canvas.getContext && canvas.getContext('2d'),
+    width = canvas.width,
+    height = canvas.height,
+    bytes = new Uint8ClampedArray(buf),
+    blocksPerRow = Math.ceil(Math.sqrt(bytes.length)),
+    blockWidth = width / blocksPerRow,
+    blockHeight = height / blocksPerRow
+
+  var i = 0
+  function getByte () {
+    return bytes[i++]
+  }
+
+  for (var y = 0; i < bytes.length; y++) {
+    for (var x = 0; x < blocksPerRow && i < bytes.length; x++) {
+      var byte = getByte()
+      var s = byte / 255
+      var hue = (s * 360)|0
+      var nw = blockWidth * s
+      var nh = blockHeight * s
+      var nx = x*blockWidth + (blockWidth - nw)/2
+      var ny = y*blockHeight + (blockHeight - nh)/2
+      // context.fillStyle = 'hsl('+hue+', 80%, 95%)'
+      context.fillStyle = 'hsl('+hue+', 50%, 30%)'
+      context.fillRect(nx, ny, nw, nh)
+      // context.strokeStyle = 'hsl('+hue+', 50%, 30%)'
+      context.strokeStyle = '#000'
+      context.strokeRect(nx, ny, nw, nh)
+    }
+  }
+}
 },{}],2:[function(require,module,exports){
 var pubkeyAvis = require('./index')
 
@@ -234,4 +269,5 @@ pubkeyAvis.blockwild(blockwildCanvas, pubkeyBuf)
 pubkeyAvis.wildegraph(wildegraphCanvas, pubkeyBuf)
 pubkeyAvis.zigzag(zigzagCanvas, pubkeyBuf)
 pubkeyAvis.hexpride(hexprideCanvas, pubkeyBuf)
+pubkeyAvis.sosquare(sosquareCanvas, pubkeyBuf)
 },{"./index":1}]},{},[2]);

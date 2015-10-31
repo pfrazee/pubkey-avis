@@ -28,3 +28,7 @@ Build `test.build.js` with `browserify test.js > test.build.js`.
 ### hexpride
 
 ![hexpride.png](./example-pics/hexpride.png)
+
+### sosquare
+
+![sosquare.png](./example-pics/sosquare.png)
