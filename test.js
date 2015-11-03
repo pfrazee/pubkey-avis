@@ -9,12 +9,40 @@ console.log(pubkeyUints)
 
 // render public key
 var pubkeyBase64 = btoa(String.fromCharCode.apply(null, pubkeyUints))
-pubkeyOutput.textContent = pubkeyBase64
 
-// render algorithms
-pubkeyAvis.blockwork(blockworkCanvas, pubkeyBuf)
-pubkeyAvis.blockwild(blockwildCanvas, pubkeyBuf)
-pubkeyAvis.wildegraph(wildegraphCanvas, pubkeyBuf)
-pubkeyAvis.zigzag(zigzagCanvas, pubkeyBuf)
-pubkeyAvis.hexpride(hexprideCanvas, pubkeyBuf)
-pubkeyAvis.sosquare(sosquareCanvas, pubkeyBuf)
+document.title = 'pubkey avis'
+append(document.body, createElement('h1', pubkeyBase64))
+
+Object.keys(pubkeyAvis).forEach(function (algo) {
+  var canvas = attr(createElement('canvas'), {
+    width: 256, height: 256
+  })
+
+  var renderBox = createElement('div')
+  renderBox.style.float = 'left'
+  renderBox.style.padding = '20px'
+
+  append(document.body, renderBox)
+  append(renderBox, createElement('h3', algo))
+  append(renderBox, canvas)
+
+  pubkeyAvis[algo](canvas, pubkeyBuf)
+})
+
+function createElement (tag, innerHTML) {
+  var el = document.createElement(tag)
+  if (innerHTML) el.innerHTML = innerHTML
+  return el
+}
+
+function append (parent, child) {
+  parent.appendChild(child)
+  return child
+}
+
+function attr (el, props) {
+  for (key in props) {
+    el[key] = props[key]
+  }
+  return el
+}
