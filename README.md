@@ -32,3 +32,7 @@ Build `test.build.js` with `browserify test.js > test.build.js`.
 ### sosquare
 
 ![sosquare.png](./example-pics/sosquare.png)
+
+### innerCircles
+
+![inner-circles.png](./example-pics/inner-circles.png)
