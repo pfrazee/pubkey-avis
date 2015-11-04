@@ -248,3 +248,75 @@ module.exports.sosquare = function (canvas, buf) {
     }
   }
 }
+
+module.exports.innerCircles = function (canvas, buf) {
+  buf = toArrayBuffer(buf)
+
+  var context = canvas.getContext && canvas.getContext('2d'),
+    width = canvas.width,
+    height = canvas.height,
+    bytes = new Uint8ClampedArray(buf),
+    blocksPerRow = Math.ceil(Math.sqrt(bytes.length)),
+    blockWidth = width / blocksPerRow,
+    blockHeight = height / blocksPerRow
+
+  var floats = []
+  bytes.forEach(function (byte) {
+    floats.push(byte/255)
+  })
+
+  var r = bytes[0]
+  var g = bytes[1]
+  var b = bytes[2]
+
+  var d = width/2
+  var x = width/2
+  var y = height/2
+
+  context.fillStyle = 'rgb('+[r, g, b].join(',')+')'
+  circle(context, x, y, d)
+
+  for (var i = 0; i < 6; i++) {
+    var iStart = 2 + (i * 4)
+    var rMod = Math.round( (floats[iStart + 1] - 0.5) * 255/1 )
+    var gMod = Math.round( (floats[iStart + 2] - 0.5) * 255/1 )
+    var bMod = Math.round( (floats[iStart + 3] - 0.5) * 255/1 )
+    var theta = floats[iStart + 4] * Math.PI * 2
+
+    var dMod = -1 * width/16
+
+    var radius = dMod/2
+    var cart = polarToCart(radius, theta)
+
+    d += dMod
+
+    x = cart.x + width/2
+    y = cart.y + height/2
+
+    r += rMod
+    g += gMod
+    b += bMod
+
+    r = Math.abs(r)
+    g = Math.abs(g)
+    b = Math.abs(b)
+
+    context.fillStyle = 'rgb('+[r, g, b].join(',')+')'
+    circle(context, x, y, d)
+  }
+}
+
+function circle (ctx, x, y, d) {
+  var r = d/2
+  ctx.beginPath()
+  ctx.arc(x, y, d, 0, 2 * Math.PI, false)
+  ctx.fill()
+  ctx.closePath()
+}
+
+function polarToCart (radius, theta) {
+  return {
+    x: radius * Math.cos(theta),
+    y: radius * Math.sin(theta)
+  }
+}
